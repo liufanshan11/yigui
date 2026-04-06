@@ -1,0 +1,22 @@
+{
+  "name": "智汇衣橱",
+  "short_name": "智汇衣橱",
+  "description": "智能穿搭，遇见更美的自己",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#6366f1",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["lifestyle", "shopping"],
+  "lang": "zh-CN",
+  "dir": "ltr"
+}
