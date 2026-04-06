@@ -15,19 +15,24 @@ from typing import Optional
 
 app = FastAPI(title="智汇衣橱 AI 分析服务")
 
+
+def parse_cors_origins() -> list[str]:
+    default = "http://localhost:5173,http://127.0.0.1:5173,https://liufanshan11.github.io"
+    raw = os.getenv("CORS_ALLOW_ORIGINS", default)
+    origins = [origin.strip() for origin in raw.split(",") if origin.strip()]
+    return origins or ["*"]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=parse_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-API_KEY = os.getenv("DASHSCOPE_API_KEY", "sk-02ac3fa059f745e9a0de2376de5ca927")
+API_KEY = os.getenv("DASHSCOPE_API_KEY", "").strip()
 DEFAULT_PORT = int(os.getenv("PORT", "8000"))
-
-if not API_KEY:
-    raise ValueError("DASHSCOPE_API_KEY environment variable not set")
 
 
 def get_project_root() -> Path:
@@ -108,6 +113,12 @@ async def health():
 @app.post("/api/analyze", response_model=AnalyzeResponse)
 async def analyze_clothing(image: UploadFile = File(...)):
     try:
+        if not API_KEY:
+            return AnalyzeResponse(
+                success=False,
+                error="服务器未配置 DASHSCOPE_API_KEY，请联系管理员设置后重试。",
+            )
+
         image_content = await image.read()
         image_base64 = encode_image_to_base64(image_content)
 

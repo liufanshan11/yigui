@@ -4,8 +4,7 @@ import { Upload, Loader2, Sparkles, X } from 'lucide-react';
 import { useWardrobe } from '../context/WardrobeContext';
 import CinematicHeader from '../components/CinematicHeader';
 import Toast from '../components/Toast';
-
-const API_BASE_URL = '';
+import { apiUrl } from '../utils/apiBase';
 
 const AddItem = () => {
   const navigate = useNavigate();
@@ -40,7 +39,7 @@ const AddItem = () => {
       const imageDataUrl = await readFileAsDataUrl(file);
       setImage(imageDataUrl);
 
-      const response = await fetch(`${API_BASE_URL}/api/analyze`, {
+      const response = await fetch(apiUrl('/api/analyze'), {
         method: 'POST',
         body: formData,
       });

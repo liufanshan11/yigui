@@ -5,8 +5,7 @@ import { generateOutfit } from '../utils/aiLogic';
 import CinematicHeader from '../components/CinematicHeader';
 import ClothingCard from '../components/ClothingCard';
 import Toast from '../components/Toast';
-
-const API_BASE_URL = '';
+import { apiUrl } from '../utils/apiBase';
 
 const scenes = [
   { key: 'commute', label: '通勤', icon: '💼' },
@@ -113,7 +112,7 @@ const Stylist = () => {
     setConsultResult(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/style-consult`, {
+      const response = await fetch(apiUrl('/api/style-consult'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -77,8 +77,41 @@ smart-wardrobe/
 部署成功后访问：
 - `https://liufanshan11.github.io/yigui/`
 
-### 3) 说明
+### 3) 配置前端后端地址
+
+在 GitHub 仓库设置中：
+- `Settings` -> `Secrets and variables` -> `Actions` -> `Variables`
+- 新增变量：`VITE_API_BASE_URL`
+- 值填写你的后端公网地址，例如：`https://yigui-api.onrender.com`
+
+### 4) 说明
 
 - GitHub Pages 只部署前端静态页面。
 - `/api/analyze` 和 `/api/style-consult` 需要后端服务（FastAPI）单独部署后才能在线使用 AI 功能。
 - 如果后端未部署，页面可访问，但 AI 接口会提示连接失败。
+
+## Render 部署（后端）
+
+本项目已内置 Render 蓝图文件：`render.yaml`（仓库根目录）。
+
+### 1) 创建 Render 服务
+
+- 登录 Render
+- 选择 `New` -> `Blueprint`
+- 连接 GitHub 仓库：`liufanshan11/yigui`
+- Render 会自动识别 `render.yaml` 并创建 `yigui-api` 服务
+
+### 2) 配置环境变量
+
+在 Render 服务里添加：
+- `DASHSCOPE_API_KEY`：你的阿里云 DashScope Key（必填）
+- `CORS_ALLOW_ORIGINS`：可保留默认或按需追加域名
+
+### 3) 部署成功后验证
+
+- 健康检查：`https://你的后端域名/api/health`
+- 正常返回 `{"status":"running"}` 即表示后端上线成功
+
+### 4) 联动前端
+
+将后端域名写入 GitHub `VITE_API_BASE_URL` 变量后，重新触发 Pages 工作流即可完成联动。
